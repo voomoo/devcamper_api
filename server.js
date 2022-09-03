@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const colors = require("colors");
+const errorHandler = require("./middleware/error");
 
 //Route Files
 const bootcamps = require("./routes/bootcamps");
@@ -19,6 +20,9 @@ app.use(express.json());
 
 //Mount Routers
 app.use("/api/v1/bootcamps", bootcamps);
+
+//Middleware to catch error and respond for above route
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
