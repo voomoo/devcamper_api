@@ -15,10 +15,7 @@ exports.getBootcamps = async (req, res, next) => {
             message: "All Bootcamps Fetched Successfully",
         });
     } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: "All Bootcamp Fetching Failed",
-        });
+        next(error);
     }
 };
 
@@ -44,17 +41,7 @@ exports.getBootcamp = async (req, res, next) => {
             message: "Bootcamp Fetched Successfully",
         });
     } catch (error) {
-        // res.status(400).json({
-        //     success: false,
-        //     message: "Failed to Fetch Bootcamp",
-        // });
-
-        next(
-            new ErrorResponse(
-                `Bootcamp not found with id of ${req.params.id}`,
-                404
-            )
-        );
+        next(error);
     }
 };
 
@@ -71,10 +58,7 @@ exports.createBootcamp = async (req, res, next) => {
             data: bootcamp,
         });
     } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: "Bootcamp Creation Failed",
-        });
+        next(error);
     }
 };
 
@@ -90,21 +74,20 @@ exports.updateBootcamp = async (req, res, next) => {
         );
 
         if (!bootcamp) {
-            return res
-                .status(400)
-                .json({ success: false, message: "Bootcamp Not Found" });
+            return next(
+                new ErrorResponse(
+                    `Bootcamp not found with id of ${req.params.id}`,
+                    404
+                )
+            );
         }
-
         res.status(200).json({
             success: true,
             data: bootcamp,
             message: "Bootcamp Updated Successfully",
         });
     } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: "Bootcamp Update Failed",
-        });
+        next(error);
     }
 };
 
@@ -116,9 +99,12 @@ exports.deleteBootcamp = async (req, res, next) => {
         const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
 
         if (!bootcamp) {
-            return res
-                .status(400)
-                .json({ success: false, message: "Bootcamp Not Found" });
+            return next(
+                new ErrorResponse(
+                    `Bootcamp not found with id of ${req.params.id}`,
+                    404
+                )
+            );
         }
 
         res.status(200).json({
@@ -127,9 +113,6 @@ exports.deleteBootcamp = async (req, res, next) => {
             message: "Bootcamp Deleted Successfully",
         });
     } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: "Bootcamp Delete Failed",
-        });
+        next(error);
     }
 };
