@@ -8,9 +8,12 @@ const {
     createBootcamp,
     updateBootcamp,
     deleteBootcamp,
+    getBootcampsInRadius,
 } = require("../controllers/bootcamps");
 
 //mount controller methods to routes
+router.route("/radius/:zipcode/:distance").get(getBootcampsInRadius);
+
 router.route("/").get(getBootcamps).post(createBootcamp);
 
 router
