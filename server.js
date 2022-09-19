@@ -1,5 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const fileupload = require("express-fileupload");
+const path = require("path");
 const connectDB = require("./config/db");
 const colors = require("colors");
 const errorHandler = require("./middleware/error");
@@ -18,6 +20,12 @@ const app = express();
 
 //Body parser
 app.use(express.json());
+
+//file uploading
+app.use(fileupload());
+
+//set static folder
+app.use(express.static(path.join(__dirname, "public")));
 
 //Mount Routers
 app.use("/api/v1/bootcamps", bootcamps);
