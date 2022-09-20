@@ -6,5 +6,15 @@ const User = require("../models/User");
 //@route POST /api/v1/auth/register
 //@access PUBLIC
 exports.register = asyncHandler(async (req, res, next) => {
-    res.status(200).json({ success: true });
+    const { name, email, password, role } = req.body;
+
+    //create user
+    const user = await User.create({
+        name,
+        email,
+        password,
+        role,
+    });
+
+    res.status(200).json({ success: true, data: user });
 });
